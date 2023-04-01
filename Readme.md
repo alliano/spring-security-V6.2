@@ -3,10 +3,10 @@ Spirng security adalah sebuah framework atau kerangka kerja yang menyediakan fit
 
 # Instalasi
 Unutuk mengimplementasikan spring secutiry, kita haurus membuat project spirng nya terlebih dahulu [spring initializer](https://start.spring.io/) dengan setingan sebagai berukut :
-[]()
+[initialize](https://github.com/alliano/spring-security-V6.2/blob/master/src/main/resources/imgs/inisialize.jpg)
 
 Untuk menggunakan Spring security ada beberapa hal yang harus dilakukan terlebih dahulu, yaitu menambahkan beberapa dependency salahsatunya dependency spring security pada project spirng kita, agar nantinya kita bisa menggunakan module-module yang kita butuhkan, berikut ini adalah dependency yang harus ditambahkan kedalam file pom.xml project kita :
-[]()
+[dependencies](https://github.com/alliano/spring-security-V6.2/blob/master/src/main/resources/imgs/dependencies.jpg)
 
 dependency ini kita gunakan untuk otomatis mereload project spring jikalau ada perubahan pada sourcede applikasi kita.
 ``` xml
