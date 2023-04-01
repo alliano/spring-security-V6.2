@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spirng.security.springsecurity.security.filter.UsernamePasswordAuthProccessingFilter;
@@ -60,7 +61,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, UsernamePasswordAuthProccessingFilter usernamePasswordAuthProccessingFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity,@Autowired UsernamePasswordAuthProccessingFilter usernamePasswordAuthProccessingFilter) throws Exception {
         httpSecurity.authorizeHttpRequests((authorize) -> {
             try {
                 authorize.and().csrf(cs -> {
@@ -69,8 +70,8 @@ public class SecurityConfiguration {
                 .and().sessionManagement(sessionManager -> {
                     sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 });
-                authorize.and()
-                .addFilterBefore(usernamePasswordAuthProccessingFilter, UsernamePasswordAuthProccessingFilter.class);
+            
+                authorize.and().addFilterBefore(usernamePasswordAuthProccessingFilter, UsernamePasswordAuthenticationFilter.class);
             } catch (Exception exception) {
                 log.info("\n");
                 log.error("ERROR {}", exception.getMessage());

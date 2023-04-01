@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spirng.security.springsecurity.dtos.LoginRequestDto;
@@ -25,6 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * mendelegasikan(menyerahkan) ke AuthenticationManager
  * 
  */
+@Component
 public class UsernamePasswordAuthProccessingFilter extends AbstractAuthenticationProcessingFilter {
 
     private final ObjectMapper objectMapper;
