@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spirng.security.springsecurity.dtos.LoginRequestDto;
 import com.spirng.security.springsecurity.dtos.UserRegisterRequestDto;
 import com.spirng.security.springsecurity.services.UserService;
 
@@ -25,8 +26,8 @@ public class UserController {
         return this.userService.register(user);
     }
 
-    @GetMapping(path = "/me")
-    public ResponseEntity<?> getCurrentLogin() {
+    @GetMapping(path = "/v1/login")
+    public ResponseEntity<?> getCurrentLogin(@RequestBody LoginRequestDto lognReq) {
         return this.userService.getCurrentLogin();
     }
 }
