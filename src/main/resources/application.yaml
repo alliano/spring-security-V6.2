@@ -1,8 +1,6 @@
 server:
   port: 8091
 spring:
-  main:
-    allow-bean-definition-overriding: true
   profiles:
     active:
     - dev
