@@ -89,23 +89,6 @@ public class SecurityConfiguration {
 
 
 
-// httpSecurity.authorizeHttpRequests()
-// .anyRequest().authenticated()
-// .and().csrf().disable()
-// .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-// .and().httpBasic();
-// httpSecurity.addFilterBefore(usernamePasswordAuthProccessingFilter, UsernamePasswordAuthProccessingFilter.class);
-
-
-
-
-
-
-
-
-
-
-
 
 
 
