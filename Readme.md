@@ -40,7 +40,7 @@ Dan dependency selanutnya adalah bean validation untuk melakukan validasi yang t
 	<artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
 ```
-Karna kita akan membangun Applikasi yang berbasis RestFull API maka kita membuhkan dependency web.
+Karna kita akan membangun Applikasi yang berbasis RestFull API maka kita membutuhkan dependency web.
 ``` xml
 <dependency>
 	<groupId>org.springframework.boot</groupId>
@@ -54,3 +54,16 @@ dan yang terakhir adalah depencency untuk spring security
 	<artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ```
+Setelah menambahkan dependency tersebut, selanjutnya adalah menjalankan perintah
+``` bash
+mvn clean install
+```
+untuk mendownload semua dependency spring securitynya.
+
+# Default Config spring security
+Secara defaut spring security akan menggunakan konfigurasi defaut jika kita tida meng konfigurasi spring security nya. Semua endpoin akan di proteksi oleh spring security dan spring security akan mengenerate password pada logger applikasinya untuk kebutuhan autentikasi.
+Cara tersebut bukanlah best practice karna pada real case nya nanti password akan dibuat oleh user sendiri dan di hash.
+
+# Mekanisme Spring Security
+[mekanisme spring](https//img)
+saat requst pertama kali masuk, requst akan masuk pada komponen yang bernama Autehntication Filter kemudian Authentication Filter akan mendelegasikan requst tersebut kepada komponen yang bernama Authentication Manager, kemudian Authentication Manager akan menggunakan komponen Authentication Provider unutuk kebutuhan authentikasi. Pada Authentication Provider ini lah logic dari authentikasi dilakukan. Pada componen Authentication Provider ini biasanya banyak komponen yang akan terlibat untuk melakukan autentikasi, misalnya adalah kompnen UserDetails komponen ini akan digunakan unutuk mendapatkan data user detail yang ada di dalam database dan data tersebut akan di cocokan  dengan data dari requst user dengan bantuan komponen PasswordEncoder, jika data tersebut mathc/valid dengan data yang ada di database maka kompnen Authentication Provider akan mengirimkan kembali data UserDetail yang valid tersebut ke komponen Authentication Filter dan akan di simpan pada component Security Context Holder.
