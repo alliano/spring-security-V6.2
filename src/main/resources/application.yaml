@@ -1,8 +1,6 @@
 server:
   port: 8091
 spring:
-  main:
-    allow-bean-definition-overriding: true
   profiles:
     active:
     - dev
@@ -10,8 +8,8 @@ spring:
     name: spring-security
   datasource:
     url: jdbc:postgresql://localhost:5432/spring_security
-    username: ${psql_username}
-    password: ${psql_password}
+    username: alliano-dev
+    password: pasword
     hikari:
       connection-timeout: 60000
       idle-timeout: 600000
@@ -20,7 +18,7 @@ spring:
   jpa:
     database: postgresql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
