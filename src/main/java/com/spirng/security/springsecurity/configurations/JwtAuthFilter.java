@@ -1,25 +1,21 @@
 package com.spirng.security.springsecurity.configurations;
 
 import java.io.IOException;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.spirng.security.springsecurity.dao.UserDao;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
-@Component @Slf4j
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserDao userDao;
@@ -28,15 +24,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader("AUTORIZATION");
+        final String authHeader = request.getHeader("authorization");
         final String userEmail;
         final String jwtToken;
-        log.info("URL : "+ request.getRequestURI());
 
+        // jika header nya tidak valid
         if(authHeader == null || !authHeader.startsWith("Bearer")) {
+            // escape
             filterChain.doFilter(request, response);
             return;
         }
+        
         jwtToken = authHeader.substring(7);
         userEmail = this.jwtUtils.extractUsername(jwtToken);
         // jika user ada dan user belum tersimpan pada security context holder

@@ -18,7 +18,8 @@ public class JwtUtils {
     private String jwtStringKey = "87587aa8-e04a-443c-9011-516c226929ed";
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        String extractClaim = extractClaim(token, Claims::getSubject);
+        return extractClaim;
     }
 
     

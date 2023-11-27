@@ -10,9 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
+
 import com.spirng.security.springsecurity.dao.UserDao;
 
 import lombok.AllArgsConstructor;
@@ -37,26 +39,27 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        HeaderWriterLogoutHandler headerWriterLogoutHandler = new HeaderWriterLogoutHandler(
+            new ClearSiteDataHeaderWriter(
+                Directive.COOKIES, Directive.CACHE, Directive.STORAGE, Directive.EXECUTION_CONTEXTS));
         http
             .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .authenticationProvider(authenticationProvider())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> {
+                auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/authenticated").permitAll()
+                 .anyRequest().authenticated();  
+            })
+            .logout(logout -> {
+               logout.logoutUrl("/api/v1/auth/logout").permitAll()
+                .addLogoutHandler(headerWriterLogoutHandler)
+                .logoutSuccessUrl("/logout").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true);
+            })
             .httpBasic(Customizer.withDefaults());
         return http.build();
-    }
-
-    // ignore url 
-    @Bean
-    public WebSecurityCustomizer securityCustomizer() {
-        return new WebSecurityCustomizer() {
-
-            @Override
-            public void customize(WebSecurity web) {
-               web.ignoring().requestMatchers(HttpMethod.POST, "/api/v1/auth/authenticated");
-            }
-            
-        };
     }
 
     @Bean
